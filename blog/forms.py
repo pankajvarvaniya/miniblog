@@ -1,0 +1,33 @@
+from django import forms
+from django.contrib.auth.forms import UserCreationForm,AuthenticationForm,UsernameField
+from django.contrib.auth.models import User
+from django.utils.translation import gettext,gettext_lazy as _
+from .models import Post
+from .models import Image
+
+class SignupForm(UserCreationForm):
+	password1 = forms.CharField(label='password' , widget=forms.PasswordInput())
+	password2 = forms.CharField(label='conform password' , widget=forms.PasswordInput())
+	username = forms.CharField(label='User Name')
+	class  Meta:
+		model = User
+		fields = ['username','first_name','last_name','email']
+		labels = {'email': ' email','first_name':'First Name','last_name':'Last Name'}
+
+class LoginForm(AuthenticationForm):
+	username=UsernameField(widget=forms.TextInput(attrs={'autofocus':True,'class':'form-control'}))
+	password=forms.CharField(label = ('password'),strip=False, widget=forms.PasswordInput(attrs={'autocomplete':'current-password','class':'form-control'}))
+
+class PostForm(forms.ModelForm):
+	class Meta:
+		model=Post
+		fields=['title','description']
+		labels={'title':'Title','description':'Description'}
+		widget={'title':forms.TextInput(attrs={'class':'form-control'}),
+		'description':forms.TextInput(attrs={'class':'form-control '})}
+
+class Myimage(forms.ModelForm):
+	class Meta:	
+		model=Image
+		fields='__all__'
+		labels = {'image':''}
